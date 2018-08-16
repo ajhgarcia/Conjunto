@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="db_albepruebae3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="_filasordenes">
+          <Key>
+            <PropertyRef Name="orden_id" />
+            <PropertyRef Name="producto_id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orden_id" Type="int" Nullable="false" />
+          <Property Name="producto_id" Type="int" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ordenes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="datetime" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="marca" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="codigo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="precio" Type="money" Nullable="false" />
+          <Property Name="url_imagen" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="correo_electronico" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="usuario" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="contraseña" Type="varchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_albepruebae3.dbo.v_ordenes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_ordenes">
+          <Key>
+            <PropertyRef Name="nombre_usuario" />
+            <PropertyRef Name="apellidos_usuario" />
+            <PropertyRef Name="numero_orden" />
+            <PropertyRef Name="marca_producto" />
+            <PropertyRef Name="nombre_producto" />
+            <PropertyRef Name="precio_producto" />
+            <PropertyRef Name="cantidad_producto" />
+          </Key>
+          <Property Name="nombre_usuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellidos_usuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="numero_orden" Type="int" Nullable="false" />
+          <Property Name="fecha_orden" Type="datetime" />
+          <Property Name="marca_producto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nombre_producto" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="precio_producto" Type="money" Nullable="false" />
+          <Property Name="cantidad_producto" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_orden">
+          <End Role="ordenes" Type="Self.ordenes" Multiplicity="1" />
+          <End Role="_filasordenes" Type="Self._filasordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ordenes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="_filasordenes">
+              <PropertyRef Name="orden_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="_filasordenes" Type="Self._filasordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="_filasordenes">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_usuario">
+          <End Role="usuarios" Type="Self.usuarios" Multiplicity="1" />
+          <End Role="ordenes" Type="Self.ordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ordenes">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_albepruebae3ModelStoreContainer">
+          <EntitySet Name="_filasordenes" EntityType="Self._filasordenes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ordenes" EntityType="Self.ordenes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productos" EntityType="Self.productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="v_ordenes" EntityType="Self.v_ordenes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_ordenes].[nombre_usuario] AS [nombre_usuario], 
+    [v_ordenes].[apellidos_usuario] AS [apellidos_usuario], 
+    [v_ordenes].[numero_orden] AS [numero_orden], 
+    [v_ordenes].[fecha_orden] AS [fecha_orden], 
+    [v_ordenes].[marca_producto] AS [marca_producto], 
+    [v_ordenes].[nombre_producto] AS [nombre_producto], 
+    [v_ordenes].[precio_producto] AS [precio_producto], 
+    [v_ordenes].[cantidad_producto] AS [cantidad_producto]
+    FROM [dbo].[v_ordenes] AS [v_ordenes]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_orden" Association="Self.fk_orden">
+            <End Role="ordenes" EntitySet="ordenes" />
+            <End Role="_filasordenes" EntitySet="_filasordenes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto" Association="Self.fk_producto">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="_filasordenes" EntitySet="_filasordenes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_usuario" Association="Self.fk_usuario">
+            <End Role="usuarios" EntitySet="usuarios" />
+            <End Role="ordenes" EntitySet="ordenes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_albepruebae3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C_filasordenes">
+          <Key>
+            <PropertyRef Name="orden_id" />
+            <PropertyRef Name="producto_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orden_id" Type="Int32" Nullable="false" />
+          <Property Name="producto_id" Type="Int32" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ordenes" Relationship="Self.fk_orden" FromRole="C_filasordenes" ToRole="ordenes" />
+          <NavigationProperty Name="productos" Relationship="Self.fk_producto" FromRole="C_filasordenes" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="ordenes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Precision="3" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="C_filasordenes" Relationship="Self.fk_orden" FromRole="ordenes" ToRole="C_filasordenes" />
+          <NavigationProperty Name="usuarios" Relationship="Self.fk_usuario" FromRole="ordenes" ToRole="usuarios" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="marca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="url_imagen" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="C_filasordenes" Relationship="Self.fk_producto" FromRole="productos" ToRole="C_filasordenes" />
+        </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo_electronico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="usuario" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contraseña" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ordenes" Relationship="Self.fk_usuario" FromRole="usuarios" ToRole="ordenes" />
+        </EntityType>
+        <EntityType Name="v_ordenes">
+          <Key>
+            <PropertyRef Name="nombre_usuario" />
+            <PropertyRef Name="apellidos_usuario" />
+            <PropertyRef Name="numero_orden" />
+            <PropertyRef Name="marca_producto" />
+            <PropertyRef Name="nombre_producto" />
+            <PropertyRef Name="precio_producto" />
+            <PropertyRef Name="cantidad_producto" />
+          </Key>
+          <Property Name="nombre_usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellidos_usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numero_orden" Type="Int32" Nullable="false" />
+          <Property Name="fecha_orden" Type="DateTime" Precision="3" />
+          <Property Name="marca_producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre_producto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio_producto" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="cantidad_producto" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_orden">
+          <End Role="ordenes" Type="Self.ordenes" Multiplicity="1" />
+          <End Role="C_filasordenes" Type="Self.C_filasordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ordenes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="C_filasordenes">
+              <PropertyRef Name="orden_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="C_filasordenes" Type="Self.C_filasordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="C_filasordenes">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_usuario">
+          <End Role="usuarios" Type="Self.usuarios" Multiplicity="1" />
+          <End Role="ordenes" Type="Self.ordenes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ordenes">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_albepruebae3Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C_filasordenes" EntityType="Self.C_filasordenes" />
+          <EntitySet Name="ordenes" EntityType="Self.ordenes" />
+          <EntitySet Name="productos" EntityType="Self.productos" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" />
+          <EntitySet Name="v_ordenes" EntityType="Self.v_ordenes" />
+          <AssociationSet Name="fk_orden" Association="Self.fk_orden">
+            <End Role="ordenes" EntitySet="ordenes" />
+            <End Role="C_filasordenes" EntitySet="C_filasordenes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto" Association="Self.fk_producto">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="C_filasordenes" EntitySet="C_filasordenes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_usuario" Association="Self.fk_usuario">
+            <End Role="usuarios" EntitySet="usuarios" />
+            <End Role="ordenes" EntitySet="ordenes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_albepruebae3ModelStoreContainer" CdmEntityContainer="db_albepruebae3Entities">
+          <EntitySetMapping Name="C_filasordenes">
+            <EntityTypeMapping TypeName="db_albepruebae3Model.C_filasordenes">
+              <MappingFragment StoreEntitySet="_filasordenes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orden_id" ColumnName="orden_id" />
+                <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ordenes">
+            <EntityTypeMapping TypeName="db_albepruebae3Model.ordenes">
+              <MappingFragment StoreEntitySet="ordenes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productos">
+            <EntityTypeMapping TypeName="db_albepruebae3Model.productos">
+              <MappingFragment StoreEntitySet="productos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="url_imagen" ColumnName="url_imagen" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="db_albepruebae3Model.usuarios">
+              <MappingFragment StoreEntitySet="usuarios">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="correo_electronico" ColumnName="correo_electronico" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_ordenes">
+            <EntityTypeMapping TypeName="db_albepruebae3Model.v_ordenes">
+              <MappingFragment StoreEntitySet="v_ordenes">
+                <ScalarProperty Name="nombre_usuario" ColumnName="nombre_usuario" />
+                <ScalarProperty Name="apellidos_usuario" ColumnName="apellidos_usuario" />
+                <ScalarProperty Name="numero_orden" ColumnName="numero_orden" />
+                <ScalarProperty Name="fecha_orden" ColumnName="fecha_orden" />
+                <ScalarProperty Name="marca_producto" ColumnName="marca_producto" />
+                <ScalarProperty Name="nombre_producto" ColumnName="nombre_producto" />
+                <ScalarProperty Name="precio_producto" ColumnName="precio_producto" />
+                <ScalarProperty Name="cantidad_producto" ColumnName="cantidad_producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
